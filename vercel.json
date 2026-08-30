@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://pharmacare-backend-omgf.onrender.com/api/$1"
+    }
+  ]
+}
