@@ -3,30 +3,16 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// Pulling credentials directly from Render's Environment Variables
 const {
-  MYSQL_HOST = "localhost",
-  MYSQL_PORT = "3306",
-  MYSQL_USER = "root",
-  MYSQL_PASSWORD = "", //enter your mysql password here
-  MYSQL_DATABASE = "pharmacy_app",
+  MYSQL_HOST,
+  MYSQL_PORT,
+  MYSQL_USER,
+  MYSQL_PASSWORD,
+  MYSQL_DATABASE = "defaultdb", 
 } = process.env;
 
-async function ensureDatabaseExists() {
-  const connection = await mysql.createConnection({
-    host: MYSQL_HOST,
-    port: Number(MYSQL_PORT),
-    user: MYSQL_USER,
-    password: MYSQL_PASSWORD,
-  });
-
-  await connection.query(
-    `CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
-  );
-  await connection.end();
-}
-
-await ensureDatabaseExists();
-
+// Connect directly to the Aiven pool (SSL is required by Aiven)
 export const pool = mysql.createPool({
   host: MYSQL_HOST,
   port: Number(MYSQL_PORT),
@@ -36,6 +22,9 @@ export const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  ssl: {
+    rejectUnauthorized: false // Required so Aiven doesn't block the connection
+  }
 });
 
 export async function initializeDatabase() {
