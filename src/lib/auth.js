@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://pharmacare-backend-omgf.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://pharmacare-backend-omgf.onrender.com/api";
 
 async function parseResponse(response) {
   const data = await response.json().catch(() => ({}));
