@@ -11,10 +11,15 @@ function MedicineCard({ med, addToCart }) {
       />
       
       <h3 style={{ margin: "0 0 4px 0", fontSize: "1.1rem", color: "#0f172a" }}>{med.name}</h3>
-      <p style={{ color: "#0ea5e9", fontSize: "0.85rem", margin: "0 0 8px 0" }}>{med.category}</p>
       
+      {/* Only show category if it exists */}
+      {med.category && (
+        <p style={{ color: "#0ea5e9", fontSize: "0.85rem", margin: "0 0 8px 0" }}>{med.category}</p>
+      )}
+      
+      {/* Only show description if it exists. flexGrow pushes the price to the bottom */}
       <p style={{ color: "#64748b", fontSize: "0.85rem", margin: "0 0 12px 0", flexGrow: 1 }}>
-        {med.description}
+        {med.description ? med.description : "No description available."} 
       </p>
       
       <div style={{ display: "flex", gap: "8px", alignItems: "baseline", marginBottom: "4px" }}>
@@ -26,8 +31,9 @@ function MedicineCard({ med, addToCart }) {
         )}
       </div>
       
+      {/* Show stock. Default to 0 if undefined */}
       <p style={{ color: med.stock > 10 ? "#16a34a" : "#dc2626", fontSize: "0.85rem", margin: "0 0 16px 0" }}>
-        Stock: {med.stock}
+        Stock: {med.stock || 0}
       </p>
       
       <button 
